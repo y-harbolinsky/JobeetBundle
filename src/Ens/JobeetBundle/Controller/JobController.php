@@ -24,6 +24,7 @@ class JobController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
+        $format = $this->getRequest()->getRequestFormat();
 /*
         $entities = $em->getRepository('EnsJobeetBundle:Job')->findAll();
 */
@@ -47,9 +48,11 @@ class JobController extends Controller
             $category->setMoreJobs($em->getRepository('EnsJobeetBundle:Job')->countActiveJobs($category->getId(), $this->container->getParameter('max_jobs_on_homepage')));
         }
 
-        return $this->render('EnsJobeetBundle:Job:index.html.twig', array(
-            'categories' => $categories
-        ));
+        return $this->render('EnsJobeetBundle:Job:index.'.$format.'.twig', array(
+            'categories' => $categories,
+            'lastUpdated' => $em->getRepository('EnsJobeetBundle:Job')->getLatestPost()->getCreatedAt()->format(DATE_ATOM),
+            'feedId' => sha1($this->get('router')->generate('ens_job', array('_format' => 'atom'), true
+            ))));
     }
     /**
      * Creates a new Job entity.
@@ -58,7 +61,7 @@ class JobController extends Controller
     public function createAction(Request $request)
     {
         $entity = new Job();
-        $form = $this->createForm(new JobType(), $entity);
+        $form = $this->createCreateForm($entity); //!!! + one argument new JobType(),
         $form->bind($request);
 
         if ($form->isValid()) {
@@ -88,7 +91,7 @@ class JobController extends Controller
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createCreateForm(Job $entity)
+    private function createCreateForm(Job $entity)  //!!! One argument
     {
         $form = $this->createForm(new JobType(), $entity, array(
             'action' => $this->generateUrl('ens_job_create'),
