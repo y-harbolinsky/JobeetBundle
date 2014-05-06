@@ -1,0 +1,17 @@
+EnsJobeetBundle_category:
+    pattern: /category/{slug}/{page}
+    defaults: {_controller: EnsJobeetBundle:Category:show, page: 1 }
+
+ens_jobeet_homepage:
+    pattern:  /
+    defaults: { _controller: EnsJobeetBundle:Job:index }
+
+EnsJobeetBundle_job:
+        resource: "@EnsJobeetBundle/Resources/config/routing/job.yml"
+        prefix:   /job
+
+login:
+    pattern: /login
+    defaults: { _controller: EncJobeetBundle:Default:login }
+login_check:
+    pattern: /login_check
