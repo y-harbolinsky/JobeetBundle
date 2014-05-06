@@ -607,4 +607,19 @@ class Job
     public function publish() {
         $this->setIsActivated(true);
     }
+
+    public function asArray($host) {
+        return array(
+            'category'      => $this->getCategory()->getName(),
+            'type'          => $this->getType(),
+            'company'       => $this->getCompany(),
+            'logo'          => $this->getLogo() ? 'http://'.$host.'/uploads/jobs/'.$this->getLogo() : null,
+            'url'           => $this->getUrl(),
+            'position'      => $this->getPosition(),
+            'location'      => $this->getPosition(),
+            'description'   => $this->getDescription(),
+            'how_to_aaply'  => $this->getHowToApply(),
+            'expires_at'    => $this->getExpiresAt()->format('Y-m-d H:i:s'),
+        );
+    }
 }

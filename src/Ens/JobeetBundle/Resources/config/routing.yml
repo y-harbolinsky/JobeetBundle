@@ -15,3 +15,13 @@ login:
     defaults: { _controller: EncJobeetBundle:Default:login }
 login_check:
     pattern: /login_check
+
+EnsJobeetBundle_api:
+    pattern: /api/{token}/jobs.{_format}
+    defaults: {_controller: "EnsJobeetBundle:Api:list"}
+    requirements:
+        _format: xml|json|yaml
+
+EnsJobeetBundle_ens_affiliate:
+    resource: "@EnsJobeetBundle/Resources/config/routing/affiliate.yml"
+    prefix:   /affiliate

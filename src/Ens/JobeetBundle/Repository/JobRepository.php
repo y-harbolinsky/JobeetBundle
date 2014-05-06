@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class JobRepository extends EntityRepository
 {
-    public function getActiveJobs($category_id = null, $max = null, $offset = null) {
+    public function getActiveJobs($category_id = null, $max = null, $offset = null, $affiliate_id = null) {
         $qb = $this->createQueryBuilder('j')
             ->where('j.expires_at > :date')
             ->setParameter('date', date('Y-m-d H:i:s', time()))
@@ -33,6 +33,15 @@ class JobRepository extends EntityRepository
             $qb->andWhere('j.category = :category_id')
                 ->setParameter('category_id', $category_id);
         }
+
+        if($affiliate_id) {
+            $qb->leftJoin('j.category', 'c')
+                ->leftJoin('c.affiliates', 'a')
+                ->andWhere('a.id = :affiliate_id')
+                ->setParameter('affiliate_id', $affiliate_id)
+            ;
+        }
+
         $query = $qb->getQuery();
 
         return $query->getResult();

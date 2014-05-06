@@ -22,3 +22,13 @@ Ens\JobeetBundle\Entity\Job:
             - Email: ~
         url:
             - Url: ~
+
+Ens\JobbetBundle\Entity\Affiliate:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: email
+    properties:
+        url:
+            - Url: ~
+        email:
+            - NotBlank: ~
+            - Email: ~
